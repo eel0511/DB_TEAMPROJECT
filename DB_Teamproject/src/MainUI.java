@@ -17,6 +17,10 @@ import javax.swing.border.TitledBorder;
 
 public class MainUI extends JFrame {
 
+	JButton loginButton;
+	JTextField idWrite;
+	JTextField pwWrite;
+
 	public static void main(String[] args) {
 		// TODO 자동 생성된 메소드 스텁
 		MainUI obj = new MainUI();
@@ -45,7 +49,7 @@ public class MainUI extends JFrame {
 		idLabel.setBounds(10, 20, 170, 20);
 		loginPanel.add(idLabel);
 
-		JTextField idWrite = new JTextField();
+		idWrite = new JTextField();
 		idWrite.setBounds(40, 20, 250, 20);
 		loginPanel.add(idWrite);
 		idWrite.setColumns(10);
@@ -54,12 +58,12 @@ public class MainUI extends JFrame {
 		pwLabel.setBounds(10, 60, 170, 20);
 		loginPanel.add(pwLabel);
 
-		JTextField pwWrite = new JTextField();
+		pwWrite = new JTextField();
 		pwWrite.setBounds(40, 60, 250, 20);
 		loginPanel.add(pwWrite);
 		pwWrite.setColumns(10);
 
-		JButton loginButton = new JButton("로그인");
+		loginButton = new JButton("로그인");
 		loginButton.setBounds(300, 20, 90, 20);
 		loginButton.addActionListener(new setAddressListener());
 		loginPanel.add(loginButton);
@@ -98,7 +102,7 @@ public class MainUI extends JFrame {
 		JPanel bookPanel = new JPanel();
 		bookPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "도서 기능", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(0, 0, 0)));
-		bookPanel.setBounds(10, 120, 400, 200);
+		bookPanel.setBounds(10, 120, 400, 100);
 		bookPanel.setLayout(null);
 
 		JLabel bookname = new JLabel("도서명");
@@ -134,19 +138,32 @@ public class MainUI extends JFrame {
 		JPanel bookListPanel = new JPanel();
 		bookListPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "검색 결과",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		bookListPanel.setBounds(420, 120, 250, 300);
+		bookListPanel.setBounds(420, 120, 250, 250);
 		bookListPanel.setLayout(null);
 
 		contentPanel.add(bookListPanel);
-		
-		String colName[] = { "도서명", "ISBN", "남은 권수" };
-		String bookData[][] = {{ "1", "2", "3" },
-				{ "4", "5", "6" }};
 
-        JTable table = new JTable(bookData, colName);
-        table.setBounds(10, 50, 230, 220);
-        bookListPanel.add(table);
-        
+		JLabel listLabel = new JLabel("도서명              ISBN                남은  권수");
+		listLabel.setBounds(10, 30, 240, 20);
+		bookListPanel.add(listLabel);
+
+		String colName[] = { "도서명", "ISBN", "남은 권수" };
+		String bookData[][] = { { "1", "2", "3" }, { "4", "5", "6" } };
+
+		JTable table = new JTable(bookData, colName);
+		table.setBounds(10, 50, 230, 150);
+		bookListPanel.add(table);
+
+		JButton borrowButton = new JButton("대출");
+		borrowButton.setBounds(10, 220, 90, 20);
+		borrowButton.addActionListener(new setAddressListener());
+		bookListPanel.add(borrowButton);
+
+		JButton reserveButton = new JButton("예약");
+		reserveButton.setBounds(120, 220, 90, 20);
+		reserveButton.addActionListener(new setAddressListener());
+		bookListPanel.add(reserveButton);
+
 		setVisible(true);
 
 	}
@@ -154,6 +171,10 @@ public class MainUI extends JFrame {
 	class setAddressListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == loginButton) {
+				int ID = Integer.parseInt(idWrite.getText());
+				String pw = pwWrite.getText();
+			}
 		}
 	}
 
