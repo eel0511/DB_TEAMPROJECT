@@ -1,22 +1,18 @@
 package testusp;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
-
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
-import testusp.MainUI;
 
-public class test {
-
-	public static boolean login(int ID, int password) {
+public class user {
+	public static String[] login(int ID, int password) {
+		// 로그인
 		Statement stmt;
 		ResultSet res;
 		Connection conn = null;
+		String[] user = { "0", "0" };
 
 		String driver = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -34,9 +30,10 @@ public class test {
 
 			while (res.next()) {
 				if (res.getInt("ID") == ID && res.getInt("password") == password) {
-					System.out.println("로그인완료");
 
-					return true;
+					user[0] = Integer.toString(res.getInt("구분"));
+					user[1] = res.getString("성명");
+					return user;
 				} else {
 					System.out.println("로그인실패");
 
@@ -45,47 +42,41 @@ public class test {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return user;
 	}
 
-	public static String[][] bookinfoISBN(int ISBN) {
-		Statement stmt;
-		ResultSet res;
-		Connection conn = null;
+	
 
+	public static void sign_up(int ID, String name,String email,int phonenum,int type,int password) {
+		// 회원가입
+		PreparedStatement  stmt;
+		int res;
+		Connection conn = null;
+		String[] user = {"0","0","0","0","0","0"};
+		
 		String driver = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		String id = "root";
 		String pw = "1234";
-		String[][] bookarray = new String[100][100];
 
-		String query = "select * from 도서 where 도서.ISBN =" + ISBN + ";";
+		String query = "INSERT INTO 회원  values ("+ID+",'"+name+"','"+email+"',"+phonenum+","+type+","+password+")";
 		try {
 			Class.forName(driver);
 
 			conn = DriverManager.getConnection(url, id, pw);
 
-			stmt = conn.createStatement();
-			res = stmt.executeQuery(query);
+			stmt = conn.prepareStatement(query);
+			res = stmt.executeUpdate();
 
-			while (res.next()) {
-				if (res.getInt("ISBN") == ISBN) {
-					System.out.println("");
-					bookarray[0][0] = Integer.toString(res.getInt("ISBN"));
-					bookarray[0][1] = res.getString("제목");
-					bookarray[0][2] = Integer.toString(res.getInt("수량"));
-					return bookarray;
-				} else {
-					System.out.println("그런책 없음");
-				}
-			}
+			System.out.println("변경된 row : " + res);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return bookarray;
+		
 	}
-
 	public static String[][] bookinfoname(String str) {
+		// 책이름으로 검색
 		Statement stmt;
 		ResultSet res;
 		Connection conn = null;
@@ -94,7 +85,7 @@ public class test {
 		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		String id = "root";
 		String pw = "1234";
-		String[][] bookarray = new String[10][3];
+		String[][] bookarray = new String[9][3];
 		int count = 0;
 		String query = "select * from 도서  where 도서.제목  like \"%" + str + "%\";";
 		try {
@@ -120,13 +111,42 @@ public class test {
 		}
 		return bookarray;
 	}
+	public static String[][] bookinfoISBN(int ISBN) {
+		// ISBN으로 책검색
+		Statement stmt;
+		ResultSet res;
+		Connection conn = null;
 
-	public static void main(String[] args) {
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+		String[][] bookarray = new String[9][3];
 
-		Scanner sc = new Scanner(System.in);
-		String str = sc.nextLine();
-		
+		String query = "select * from 도서 where 도서.ISBN =" + ISBN + ";";
+		try {
+			Class.forName(driver);
 
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.createStatement();
+			res = stmt.executeQuery(query);
+
+			while (res.next()) {
+				if (res.getInt("ISBN") == ISBN) {
+					System.out.println("");
+					bookarray[0][0] = Integer.toString(res.getInt("ISBN"));
+					bookarray[0][1] = res.getString("제목");
+					bookarray[0][2] = Integer.toString(res.getInt("수량"));
+					return bookarray;
+				} else {
+					System.out.println("그런책 없음");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookarray;
 	}
 
 }
