@@ -27,6 +27,7 @@ public class MainUI extends JFrame {
    JButton bookMngButton;
    JButton rankButton;
    JButton userButton;
+   JButton signUpButton;
    
    JButton loginButton;
    JButton ISBNButton;
@@ -90,9 +91,9 @@ public class MainUI extends JFrame {
       loginButton.addActionListener(new setAddressListener());
       loginPanel.add(loginButton);
 
-      JButton signUpButton = new JButton("회원가입");
+      signUpButton = new JButton("회원가입");
       signUpButton.setBounds(300, 60, 90, 20);
-      loginButton.addActionListener(new setAddressListener());
+      signUpButton.addActionListener(new setAddressListener());
       loginPanel.add(signUpButton);
 
       JPanel adminPanel = new JPanel();
@@ -326,6 +327,9 @@ public class MainUI extends JFrame {
          else if(e.getSource() == bookNameButton) {
             String bookname = bookWrite.getText();
          }
+         else if(e.getSource() == signUpButton) {
+             SignUpUI obj = new SignUpUI();
+          }
          
       }
    }
