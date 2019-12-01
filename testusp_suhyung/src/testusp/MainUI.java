@@ -177,8 +177,12 @@ public class MainUI extends JFrame {
 			if (e.getSource() == loginButton) {
 				int ID = Integer.parseInt(idWrite.getText());
 				int pw = Integer.parseInt(pwWrite.getText());
-				test.login(ID, pw);
+				if(test.login(ID, pw)) {
+					System.out.println("a");
+				}
+					
 			}
+			
 		}
 	}
 
