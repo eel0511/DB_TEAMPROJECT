@@ -42,7 +42,11 @@ public class MainUI extends JFrame {
    JTextField ISBNWrite;
    JTextField bookWrite;
    
+   JButton searchReserveBookButton;
+   JButton searchBookButton;
+   
    static JTable table;
+   static JTable usertable;
    
    JPanel bookListPanel;
    JPanel contentPanel;
@@ -273,18 +277,18 @@ public class MainUI extends JFrame {
          userbookListPanel.setBounds(420, 380, 250, 250);
          userbookListPanel.setLayout(null);
          
-         JLabel booklistLabel = new JLabel("도서명              ISBN                  대출기간");
+         JLabel booklistLabel = new JLabel("도서명              대출일자         반납만료일");
          booklistLabel.setBounds(10, 30, 240, 20);
          userbookListPanel.add(booklistLabel);
 
          String user_colName[] = { "도서명", "ISBN", "대출기간" };
-         String user_bookData[][] = { { "1", "2", "3" }, { "4", "5", "6" } };
+         String user_bookData[][] = new String[15][3];
 
-         JTable usertable = new JTable(user_bookData, user_colName);
+         usertable = new JTable(user_bookData, user_colName);
          usertable.setBounds(10, 50, 230, 150);
          userbookListPanel.add(usertable);
          
-         JButton searchBookButton = new JButton("조회");
+         searchBookButton = new JButton("조회");
          searchBookButton.setBounds(10, 220, 90, 20);
          searchBookButton.addActionListener(new setAddressListener());
          userbookListPanel.add(searchBookButton); 
@@ -315,7 +319,7 @@ public class MainUI extends JFrame {
          reservetable.setBounds(10, 50, 350, 150);
          reservebookListPanel.add(reservetable);
          
-         JButton searchReserveBookButton  = new JButton("조회");
+         searchReserveBookButton  = new JButton("조회");
          searchReserveBookButton .setBounds(10, 220, 90, 20);
          searchReserveBookButton .addActionListener(new setAddressListener());
          reservebookListPanel.add(searchReserveBookButton);
@@ -379,7 +383,7 @@ public class MainUI extends JFrame {
                bookMngButton.setEnabled(true);
                rankButton.setEnabled(true);
                userButton.setEnabled(true);
-               grade = 3;
+               grade = 4;
             }
             
 //            test.login(ID, pw);
@@ -399,7 +403,22 @@ public class MainUI extends JFrame {
         	 user u = new user();
         	 u.secession(valId, valpw);
          }
-         
+         else if(e.getSource() == searchBookButton) {
+        	 int ID = Integer.parseInt(idWrite.getText());
+        	 String bookData[][] = borrow.userbooklist(ID);
+             System.out.println(ID);
+             model = new DefaultTableModel();
+              
+             model.setDataVector(bookData, colName);
+             System.out.println(bookData[0][0]);
+             
+             
+             for(int i = 0; i < bookData.length; i++) {
+                usertable.setValueAt(bookData[i][0], i, 0);
+                usertable.setValueAt(bookData[i][1], i, 1);
+                usertable.setValueAt(bookData[i][2], i, 2);
+             }
+         }
       }
    }
 

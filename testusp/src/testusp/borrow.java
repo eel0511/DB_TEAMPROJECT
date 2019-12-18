@@ -81,7 +81,7 @@ public class borrow {
 	}
 	
 	public static String[][] userbooklist(int ID) {
-		// 책이름으로 검색
+		// 회원대여목록
 		Statement stmt;
 		ResultSet res;
 		Connection conn = null;
@@ -92,7 +92,7 @@ public class borrow {
 		String pw = "1234";
 		String[][] bookarray = new String[9][3];
 		int count = 0;
-		String query = "select * from 대여,도서  where 대여.ID  like \"%" + ID + "%\";";
+		String query = "select * from (대여 natural join 도서)  where 대여.ID  = "+" ID "+"";
 		try {
 			Class.forName(driver);
 
@@ -103,7 +103,7 @@ public class borrow {
 
 			while (res.next()) {
 
-				bookarray[count][0] = Integer.toString(res.getInt("ISBN"));
+				bookarray[count][0] = res.getString("제목");
 				bookarray[count][1] = res.getString("대출일자");
 				bookarray[count][2] = res.getString("반납만료일자");
 			
