@@ -68,7 +68,35 @@ public class user {
 			stmt = conn.prepareStatement(query);
 			res = stmt.executeUpdate();
 
-			System.out.println("변경된 row : " + res);
+			System.out.println("회원가입 완료");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	public static void secession(int ID,int password) {
+		// 회원탈퇴
+		PreparedStatement  stmt;
+		int res;
+		Connection conn = null;
+		
+		
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+
+		String query = "delete from 회원 where ID like '"+ID+"'";
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.prepareStatement(query);
+			res = stmt.executeUpdate();
+
+			System.out.println("회원탈퇴 완료");
 
 		} catch (Exception e) {
 			e.printStackTrace();

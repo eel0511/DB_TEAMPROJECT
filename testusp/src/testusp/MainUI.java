@@ -33,6 +33,10 @@ public class MainUI extends JFrame {
    JButton ISBNButton;
    JButton bookNameButton;
    
+   JButton updateButton;
+   JButton mybookButton;
+   JButton secessionButton;
+   
    JTextField idWrite;
    JTextField pwWrite;
    JTextField ISBNWrite;
@@ -43,6 +47,7 @@ public class MainUI extends JFrame {
    JPanel bookListPanel;
    JPanel contentPanel;
    
+   static int grade;
    
     String colName[] = { "도서명", "ISBN", "남은 권수" };
 //    Vector<String> colName = new Vector<String>();
@@ -99,28 +104,54 @@ public class MainUI extends JFrame {
       JPanel adminPanel = new JPanel();
       adminPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "관리자기능", TitledBorder.LEADING,
             TitledBorder.TOP, null, new Color(0, 0, 0)));
-      adminPanel.setBounds(420, 5, 250, 100);
+      adminPanel.setBounds(420, 5, 110, 100);
       adminPanel.setLayout(null);
-
+      
       contentPanel.add(adminPanel);
 
       bookMngButton = new JButton("도서관리");
-      bookMngButton.setBounds(20, 15, 90, 20);
-      loginButton.addActionListener(new setAddressListener());
+      bookMngButton.setBounds(10, 15, 90, 20);
+      bookMngButton.addActionListener(new setAddressListener());
       bookMngButton.setEnabled(false);
       adminPanel.add(bookMngButton);
 
       rankButton = new JButton("대출 TOP");
-      rankButton.setBounds(20, 40, 90, 20);
-      loginButton.addActionListener(new setAddressListener());
+      rankButton.setBounds(10, 40, 90, 20);
+      rankButton.addActionListener(new setAddressListener());
       rankButton.setEnabled(false);
       adminPanel.add(rankButton);
 
       userButton = new JButton("회원관리");
-      userButton.setBounds(20, 65, 90, 20);
-      loginButton.addActionListener(new setAddressListener());
+      userButton.setBounds(10, 65, 90, 20);
+      userButton.addActionListener(new setAddressListener());
       userButton.setEnabled(false);
       adminPanel.add(userButton);
+      
+      JPanel userPanel = new JPanel();
+      userPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "사용자기능", TitledBorder.LEADING,
+            TitledBorder.TOP, null, new Color(0, 0, 0)));
+      userPanel.setBounds(530, 5, 110, 100);
+      userPanel.setLayout(null);
+        
+      contentPanel.add(userPanel);
+      
+      updateButton = new JButton("정보수정");
+      updateButton.setBounds(10, 15, 90, 20);
+      updateButton.addActionListener(new setAddressListener());
+      updateButton.setEnabled(false);
+      userPanel.add(updateButton);
+
+      mybookButton = new JButton("대출목록");
+      mybookButton.setBounds(10, 40, 90, 20);
+      mybookButton.addActionListener(new setAddressListener());
+      mybookButton.setEnabled(false);
+      userPanel.add(mybookButton);
+
+      secessionButton = new JButton("탈퇴");
+      secessionButton.setBounds(10, 65, 90, 20);
+      secessionButton.addActionListener(new setAddressListener());
+      secessionButton.setEnabled(false);
+      userPanel.add(secessionButton);
 
       JPanel bookPanel = new JPanel();
       bookPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "도서 기능", TitledBorder.LEADING,
@@ -217,7 +248,18 @@ public class MainUI extends JFrame {
 
       JButton borrowButton = new JButton("대출");
       borrowButton.setBounds(10, 220, 90, 20);
-      borrowButton.addActionListener(new setAddressListener());
+      borrowButton.addActionListener(new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent arg0) {
+             int row = table.getSelectedRow();
+             System.out.println(row);
+             int valISBN = Integer.parseInt((String) table.getValueAt(row, 0));
+             int valID = Integer.parseInt(idWrite.getText());
+             int valcount = Integer.parseInt((String) table.getValueAt(row, 2)); 	
+             borrow b = new borrow();
+             b.borrow(valISBN, valID, valcount,grade);
+          }});
       bookListPanel.add(borrowButton);
 
       JButton reserveButton = new JButton("예약");
@@ -303,23 +345,41 @@ public class MainUI extends JFrame {
             if(temp[0].equals("0")) {
                JOptionPane.showMessageDialog(null, "등록되지 않은 회원입니다.", "경고 메시지 제목", JOptionPane.WARNING_MESSAGE);
             }
-            else if(temp[0].equals("1")) {
+            else if(temp[0].equals("1")) { //학생
                JOptionPane.showMessageDialog(null, "로그인 되었습니다.");
                idWrite.setEditable(false);
                pwWrite.setEditable(false);
+               updateButton.setEnabled(true);
+               mybookButton.setEnabled(true);
+               secessionButton.setEnabled(true);
+               grade = 1;
             }
-            else if(temp[0].equals("2")) {
+            else if(temp[0].equals("2")) {//대학원생
                JOptionPane.showMessageDialog(null, "로그인 되었습니다.");
                idWrite.setEditable(false);
                pwWrite.setEditable(false);
+               updateButton.setEnabled(true);
+               mybookButton.setEnabled(true);
+               secessionButton.setEnabled(true);
+               grade = 2;
             }
-            else if(temp[0].equals("3")) {
+            else if(temp[0].equals("3")) {//교직원
+                JOptionPane.showMessageDialog(null, "로그인 되었습니다.");
+                idWrite.setEditable(false);
+                pwWrite.setEditable(false);
+                updateButton.setEnabled(true);
+                mybookButton.setEnabled(true);
+                secessionButton.setEnabled(true);
+                grade = 3;
+             }
+            else if(temp[0].equals("4")) {//관리자
                JOptionPane.showMessageDialog(null, "관리자 로그인 되었습니다.");
                idWrite.setEditable(false);
                pwWrite.setEditable(false);
                bookMngButton.setEnabled(true);
                rankButton.setEnabled(true);
                userButton.setEnabled(true);
+               grade = 3;
             }
             
 //            test.login(ID, pw);
@@ -330,6 +390,15 @@ public class MainUI extends JFrame {
          else if(e.getSource() == signUpButton) {
              SignUpUI obj = new SignUpUI();
           }
+         else if(e.getSource() == updateButton) {
+             UpdateUI update = new UpdateUI(idWrite.getText()); 
+          }
+         else if(e.getSource() == secessionButton) {
+        	 int valId = Integer.parseInt(idWrite.getText());
+        	 int valpw = Integer.parseInt(pwWrite.getText());
+        	 user u = new user();
+        	 u.secession(valId, valpw);
+         }
          
       }
    }

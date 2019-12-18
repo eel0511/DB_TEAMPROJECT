@@ -122,7 +122,7 @@ public class SignUpUI extends JFrame {
             String select = Combo.getSelectedItem().toString();
             
             user.sign_up(Integer.parseInt(id), name, email, Integer.parseInt(number), code, Integer.parseInt(pw));
-            
+            dispose();
          }});
       signUpPanel.add(submitButton);
       
