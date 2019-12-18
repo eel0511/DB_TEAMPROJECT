@@ -18,13 +18,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import testusp.*;
 
-public class ManageBookUI extends JFrame {
+public class UpdateBookUI extends JFrame {
    
-   JButton deleteButton;
-   JButton updateButton;
    JButton changeButton;
-   JButton searchButton;
-   
+ 
    JTextField booknameWrite;
    JTextField isbnWrite;
    JTextField authorWrite;
@@ -34,13 +31,7 @@ public class ManageBookUI extends JFrame {
    JPanel contentPanel;
    JPanel manageBookPanel;
    
-   JTable table;
-   
-   String colName[] = { "도서명", "ISBN", "저자", "출판사", "수량" };
-// Vector<String> colName = new Vector<String>();
-private DefaultTableModel model = new DefaultTableModel(colName, 0);
-   
-   public ManageBookUI() {
+   public UpdateBookUI() {
       setTitle("DB TeamProject");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setBounds(250, 250, 600, 600);
@@ -105,10 +96,10 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
       
       
       
-      updateButton = new JButton("등록");
-      updateButton.setBounds(370, 70, 120, 30);
+      changeButton = new JButton("수정");
+      changeButton.setBounds(370, 70, 120, 30);
       
-      updateButton.addActionListener(new ActionListener() {
+      changeButton.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent arg0) {
              String bookname = booknameWrite.getText();
@@ -119,76 +110,15 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
               String booknum = bookNumWrite.getText();
               int BookNum = Integer.parseInt(booknum);
              
-              manager.add_book(ISBN, bookname, author, publisher, BookNum);
+              manager.book_update(ISBN, bookname, author, publisher, BookNum);
              
               dispose();
           }});
     
       
-      searchButton = new JButton("검색");
-      searchButton.setBounds(10, 425, 60, 20);
-      searchButton.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent arg0) {
-             String bookname = booknameWrite.getText();
-             System.out.println("갱신");
-             String bookData[][] = manager.managerbookinfoname(bookname);
-
-             model = new DefaultTableModel();
-
-             model.setDataVector(bookData, colName);
-
-             for (int i = 0; i < bookData.length; i++) {
-                table.setValueAt(bookData[i][0], i, 0);
-                table.setValueAt(bookData[i][1], i, 1);
-                table.setValueAt(bookData[i][2], i, 2);
-                table.setValueAt(bookData[i][3], i, 3);
-                table.setValueAt(bookData[i][4], i, 4);
-             }
-          }
-       });
-      changeButton = new JButton("수정");
-      changeButton.setBounds(75, 425, 60, 20);
-      
-      deleteButton = new JButton("삭제");
-      deleteButton.setBounds(140, 425, 60, 20);
-      deleteButton.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent arg0) {
-             int row = table.getSelectedRow();
-             int valISBN = Integer.parseInt((String) table.getValueAt(row, 1));
-             manager.book_delete(valISBN);
-          }
-       });
-      manageBookPanel.add(searchButton);
-      manageBookPanel.add(updateButton);
       manageBookPanel.add(changeButton);
-      manageBookPanel.add(deleteButton);
       
-      JLabel listLabel = new JLabel("          도서명                     ISBN                         저자                       출판사                     수량");
-      listLabel.setBounds(10, 200, 500, 20);
-      manageBookPanel.add(listLabel);
-
-      String colName[] = { "도서명", "ISBN", "저자", "출판사", "수량" };
-      String[][] bookData = new String[12][5];
-
-      model = new DefaultTableModel();
-      model.setDataVector(bookData, colName);
-      
-      table = new JTable(model);
-      table.setBounds(10, 220, 500, 195);
-      manageBookPanel.add(table);
       
       setVisible(true);
    }
-   
-   class setAddressListener implements ActionListener {
-	      @Override
-	      public void actionPerformed(ActionEvent e) {
-	         if (e.getSource() == changeButton) {
-	            UpdateBookUI updateBook = new UpdateBookUI();
-	         }
-
-	   }
-	   }
 }

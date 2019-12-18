@@ -8,9 +8,7 @@ public class Main {
 
 		
 		MainUI obj = new MainUI();
-		//borrow b = new borrow();
-		//b.borrow(1, 123, 1);
-
+		
 	}
 
 }

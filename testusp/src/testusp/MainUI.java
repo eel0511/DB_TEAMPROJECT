@@ -227,6 +227,13 @@ public class MainUI extends JFrame {
 
 		contentPanel.add(bookPanel);
 
+		JPanel myReservePanel = new JPanel();
+		myReservePanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "내 예약 현황",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		myReservePanel.setBounds(10, 220, 400, 160);
+
+		contentPanel.add(myReservePanel);
+
 		bookListPanel = new JPanel();
 		bookListPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "검색 결과",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));

@@ -37,8 +37,9 @@ public class manager {
 
 //				System.out.println(Integer.toString(res.getInt("ISBN")) + " " + res.getString("제목")
 //						+ " " +Integer.toString(res.getInt("수량")));
-				bookarray[count][0] = Integer.toString(res.getInt("ISBN"));
-				bookarray[count][1] = res.getString("제목");
+				
+				bookarray[count][0] = res.getString("제목");
+				bookarray[count][1] = Integer.toString(res.getInt("ISBN"));
 				bookarray[count][2] = res.getString("저자");
 				bookarray[count][3] = res.getString("출판사");
 				bookarray[count][4] = Integer.toString(res.getInt("수량"));
