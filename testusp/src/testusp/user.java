@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import javax.swing.JOptionPane;
 
 public class user {
 	public static String[] login(int ID, int password) {
@@ -44,6 +49,41 @@ public class user {
 		}
 		return user;
 	}
+	public static void userdata_update(int ID, String name,String email,int phonenum,int type,int password) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+		Date currentTime = new Date();
+		String dTime = formatter.format(currentTime);
+
+		// 회원수정
+
+		PreparedStatement stmt;
+		int res;
+		Connection conn = null;
+
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+		String query = "";
+
+		query = "update 회원 set 회원.ID= "+ID+", 회원.성명='"+name+"',회원.이메일='"+email+"',회원.전화번호="+phonenum+",회원.구분="+type+",회원.password="+password+"";
+
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.prepareStatement(query);
+			res = stmt.executeUpdate();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+
 
 	
 
@@ -68,12 +108,12 @@ public class user {
 			stmt = conn.prepareStatement(query);
 			res = stmt.executeUpdate();
 
-			System.out.println("회원가입 완료");
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		JOptionPane.showMessageDialog(null, "회원가입완료");
 	}
 	public static void secession(int ID,int password) {
 		// 회원탈퇴
@@ -96,11 +136,12 @@ public class user {
 			stmt = conn.prepareStatement(query);
 			res = stmt.executeUpdate();
 
-			System.out.println("회원탈퇴 완료");
+		
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		JOptionPane.showMessageDialog(null, "회원탈퇴완료");
 		
 	}
 	public static String[][] bookinfoname(String str) {
@@ -126,8 +167,7 @@ public class user {
 
 			while (res.next()) {
 
-//				System.out.println(Integer.toString(res.getInt("ISBN")) + " " + res.getString("제목")
-//						+ " " +Integer.toString(res.getInt("수량")));
+				//if(res.getString(columnIndex))//
 				bookarray[count][0] = Integer.toString(res.getInt("ISBN"));
 				bookarray[count][1] = res.getString("제목");
 				bookarray[count][2] = Integer.toString(res.getInt("수량"));
@@ -149,6 +189,7 @@ public class user {
 		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		String id = "root";
 		String pw = "1234";
+		int count =0;
 		String[][] bookarray = new String[9][3];
 
 		String query = "select * from 도서 where 도서.ISBN =" + ISBN + ";";
@@ -163,12 +204,13 @@ public class user {
 			while (res.next()) {
 				if (res.getInt("ISBN") == ISBN) {
 					System.out.println("");
-					bookarray[0][0] = Integer.toString(res.getInt("ISBN"));
-					bookarray[0][1] = res.getString("제목");
-					bookarray[0][2] = Integer.toString(res.getInt("수량"));
+					bookarray[count][0] = Integer.toString(res.getInt("ISBN"));
+					bookarray[count][1] = res.getString("제목");
+					bookarray[count][2] = Integer.toString(res.getInt("수량"));
+					count++;
 					return bookarray;
 				} else {
-					System.out.println("그런책 없음");
+					JOptionPane.showMessageDialog(null, "해당 번호의 책은 없습니다");
 				}
 			}
 		} catch (Exception e) {

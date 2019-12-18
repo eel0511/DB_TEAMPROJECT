@@ -16,39 +16,39 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 public class UpdateUI extends JFrame {
-	
+
 	JButton submitButton;
-	
+
 	JTextField idWrite;
 	JTextField pwWrite;
 	JTextField nameWrite;
 	JTextField emailWrite;
 	JTextField codeWrite;
 	JTextField numberWrite;
-	
+
 	JPanel contentPanel;
 	JPanel signUpPanel;
-	
+
 	JComboBox Combo;
 
-	UpdateUI(String id){
+	UpdateUI(String id) {
 		setTitle("DB TeamProject");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(250, 250, 400, 400);
-		
+
 		contentPanel = new JPanel();
 		((JComponent) contentPanel).setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
-		
+
 		signUpPanel = new JPanel();
 		signUpPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "정보수정", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(0, 0, 0)));
 		signUpPanel.setBounds(10, 5, 360, 330);
 		signUpPanel.setLayout(null);
-		
+
 		contentPanel.add(signUpPanel);
-		
+
 		JLabel idLabel = new JLabel("ID");
 		idLabel.setBounds(10, 20, 170, 20);
 		signUpPanel.add(idLabel);
@@ -68,7 +68,7 @@ public class UpdateUI extends JFrame {
 		pwWrite.setBounds(40, 60, 250, 20);
 		signUpPanel.add(pwWrite);
 		pwWrite.setColumns(10);
-		
+
 		JLabel nameLabel = new JLabel("성명");
 		nameLabel.setBounds(10, 100, 170, 20);
 		signUpPanel.add(nameLabel);
@@ -77,7 +77,7 @@ public class UpdateUI extends JFrame {
 		nameWrite.setBounds(40, 100, 250, 20);
 		signUpPanel.add(nameWrite);
 		nameWrite.setColumns(10);
-		
+
 		JLabel emailLabel = new JLabel("메일");
 		emailLabel.setBounds(10, 140, 170, 20);
 		signUpPanel.add(emailLabel);
@@ -86,7 +86,7 @@ public class UpdateUI extends JFrame {
 		emailWrite.setBounds(40, 140, 250, 20);
 		signUpPanel.add(emailWrite);
 		emailWrite.setColumns(10);
-		
+
 		JLabel numberLabel = new JLabel("번호");
 		numberLabel.setBounds(10, 180, 170, 20);
 		signUpPanel.add(numberLabel);
@@ -95,17 +95,17 @@ public class UpdateUI extends JFrame {
 		numberWrite.setBounds(40, 180, 250, 20);
 		signUpPanel.add(numberWrite);
 		numberWrite.setColumns(10);
-		
-		String[] temp = {"학부","대학원","교직원"};
-		
+
+		String[] temp = { "학부", "대학원", "교직원" };
+
 		JLabel comboLabel = new JLabel("직책");
 		comboLabel.setBounds(10, 220, 170, 20);
 		signUpPanel.add(comboLabel);
-		
+
 		Combo = new JComboBox(temp);
 		Combo.setBounds(40, 220, 250, 20);
 		signUpPanel.add(Combo);
-		
+
 		submitButton = new JButton("제출");
 		submitButton.setBounds(40, 260, 90, 20);
 		submitButton.addActionListener(new ActionListener() {
@@ -115,14 +115,19 @@ public class UpdateUI extends JFrame {
 				String pw = pwWrite.getText();
 				String name = nameWrite.getText();
 				String email = emailWrite.getText();
-				String code = codeWrite.getText();
 				String number = numberWrite.getText();
-				String select = Combo.getSelectedItem().toString();
-				
-			}});
+
+				int select = Combo.getSelectedIndex() + 1;
+
+				user.userdata_update(Integer.parseInt(id), name, email, Integer.parseInt(number), select,
+						Integer.parseInt(pw));
+				dispose();
+			}
+		});
 		signUpPanel.add(submitButton);
-		
+
 		setVisible(true);
+		
 	}
 
 }
