@@ -455,6 +455,9 @@ public class MainUI extends JFrame {
 			} else if (e.getSource() == userButton) {
 				ApproveUI update = new ApproveUI();
 			}
+			else if(e.getSource() == rankButton) {
+				RankUI rank = new RankUI();
+	         }
 		}
 
 	}
