@@ -35,9 +35,9 @@ public class reservation {
 
 				// if(res.getString(columnIndex))//
 				bookarray[count][0] = res.getString("제목");
-				bookarray[count][1] = Integer.toString(res.getInt("대여번호"));
-				bookarray[count][2] = Integer.toString(res.getInt("대출가능일"));
-				bookarray[count][2] = Integer.toString(res.getInt("예약순번"));
+				bookarray[count][1] = Integer.toString(res.getInt("ISBN"));
+				bookarray[count][2] = Integer.toString(res.getInt("반납만료일자"));
+				bookarray[count][3] = Integer.toString(res.getInt("예약순번"));
 
 				count++;
 
@@ -74,7 +74,7 @@ public class reservation {
 
 				// if(res.getString(columnIndex))//
 				bookarray[count][0] = res.getString("제목");
-				bookarray[count][1] = Integer.toString(res.getInt("대여번호"));
+				bookarray[count][1] = Integer.toString(res.getInt("ISBN"));
 				bookarray[count][2] = Integer.toString(res.getInt("반납만료일자")); // 대출가능일
 				bookarray[count][2] = Integer.toString(res.getInt("예약순번"));
 
@@ -109,12 +109,14 @@ public class reservation {
 		try {
 			Class.forName(driver);
 
-			conn = DriverManager.getConnection(url, id, pw);
+			conn2 = DriverManager.getConnection(url, id, pw);
 
 			stmt2 = conn2.createStatement();
 			res2 = stmt2.executeQuery(query2);
 			num = res2.getInt("대여번호");
-
+			System.out.println(num);
+			System.out.println(ID);
+			System.out.println(ISBN);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -126,12 +128,13 @@ public class reservation {
 
 			stmt = conn.prepareStatement(query);
 			res = stmt.executeUpdate();
+			JOptionPane.showMessageDialog(null, "예약취소");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		JOptionPane.showMessageDialog(null, "예약취소");
+		
 
 	}
 

@@ -45,8 +45,9 @@ public class MainUI extends JFrame implements MouseListener {
 	JButton borrowButton;
 
 	JButton searchBookButton;
-
 	JButton searchReserveBookButton;
+	JButton deleteButton;
+	JButton searchMyreserveButton;
 
 	JTextField idWrite;
 	JTextField pwWrite;
@@ -55,7 +56,8 @@ public class MainUI extends JFrame implements MouseListener {
 
 	static JTable table;
 	static JTable usertable;
-	static JTable reservetable
+	static JTable reservetable;
+	static JTable myreservetable;
 
 	JPanel bookListPanel;
 	JPanel contentPanel;
@@ -237,6 +239,23 @@ public class MainUI extends JFrame implements MouseListener {
 
 		contentPanel.add(myReservePanel);
 
+		String colNamea[] = { "도서명", "ISBN", "남은 권수", "순번" };
+		String[][] bookDataa = new String[7][4];
+		model.setDataVector(bookDataa, colNamea);
+
+		myreservetable = new JTable(model);
+		myreservetable.setBounds(10, 10, 100, 50);
+
+		deleteButton = new JButton("취소");
+		deleteButton.setBounds(120, 220, 90, 20);
+		deleteButton.addActionListener(new setAddressListener());
+		searchMyreserveButton = new JButton("조회");
+		searchMyreserveButton.setBounds(120, 220, 90, 20);
+		searchMyreserveButton.addActionListener(new setAddressListener());
+		myReservePanel.add(myreservetable);
+		myReservePanel.add(searchMyreserveButton);
+		myReservePanel.add(deleteButton);
+
 		bookListPanel = new JPanel();
 		bookListPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "검색 결과",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -345,13 +364,12 @@ public class MainUI extends JFrame implements MouseListener {
 		reservetable.setBounds(10, 50, 350, 150);
 		reservebookListPanel.add(reservetable);
 
-		searchReserveBookButton = new JButton("예약");
+		searchReserveBookButton = new JButton("예약조회");
 		searchReserveBookButton.setBounds(10, 220, 90, 20);
 		searchReserveBookButton.addActionListener(new setAddressListener());
 		reservebookListPanel.add(searchReserveBookButton);
 
 		contentPanel.add(reservebookListPanel);
-
 
 		logOutButton = new JButton("로그아웃");
 		logOutButton.setBounds(15, 640, 100, 20);
@@ -453,15 +471,13 @@ public class MainUI extends JFrame implements MouseListener {
 				}
 			} else if (e.getSource() == userButton) {
 				ApproveUI update = new ApproveUI();
-			}
-			else if(e.getSource() == rankButton) {
+			} else if (e.getSource() == rankButton) {
 				RankUI rank = new RankUI();
-	         }
-			else if(e.getSource() == reserveButton) {
+			} else if (e.getSource() == searchReserveBookButton) {
 				int row = table.getSelectedRow();
 				int valISBN = Integer.parseInt((String) table.getValueAt(row, 0));
-				
-				String bookData[][] = reservation.userbooklist(valISBN);
+
+				String bookData[][] = reservation.reservationinforank(valISBN);
 
 				model = new DefaultTableModel();
 
@@ -473,7 +489,36 @@ public class MainUI extends JFrame implements MouseListener {
 					reservetable.setValueAt(bookData[i][2], i, 2);
 					reservetable.setValueAt(bookData[i][3], i, 3);
 				}
+			} else if (e.getSource() == reserveButton) {
+				int row = table.getSelectedRow();
+				int valISBN = Integer.parseInt((String) table.getValueAt(row, 0));
+				int ID = Integer.parseInt(idWrite.getText());
+				reservation.reservation_make(ID, valISBN);
+			} else if (e.getSource() == searchMyreserveButton) {
+				int ID = Integer.parseInt(idWrite.getText());
+				String bookData[][] = reservation.reservationinfo(ID);
+				for (int i = 0; i < bookData.length; i++) {
+					myreservetable.setValueAt(bookData[i][0], i, 0);
+					myreservetable.setValueAt(bookData[i][1], i, 1);
+					myreservetable.setValueAt(bookData[i][2], i, 2);
+					myreservetable.setValueAt(bookData[i][3], i, 3);
+				}
+			} else if (e.getSource() == deleteButton) {
+				int row = myreservetable.getSelectedRow();
+				int ISBN = Integer.parseInt((String) myreservetable.getValueAt(row, 1));
+				int ID = Integer.parseInt(idWrite.getText());
+				reservation.delete_reservation(ID, ISBN);
+				
+				String bookData[][] = reservation.reservationinfo(ID);
+				for (int i = 0; i < bookData.length; i++) {
+					myreservetable.setValueAt(bookData[i][0], i, 0);
+					myreservetable.setValueAt(bookData[i][1], i, 1);
+					myreservetable.setValueAt(bookData[i][2], i, 2);
+					myreservetable.setValueAt(bookData[i][3], i, 3);
+			}
 		}
+
+	}
 
 	}
 
@@ -545,40 +590,41 @@ public class MainUI extends JFrame implements MouseListener {
 		logOutButton.setEnabled(true);
 
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		try {
-		int row = table.getSelectedRow();
-		if(Integer.parseInt((String) table.getValueAt(row, 2)) == 0) {
-			reserveButton.setEnabled(true);
-		}else {
-			reserveButton.setEnabled(false);
-		}}catch(NumberFormatException e1) {
+			int row = table.getSelectedRow();
+			if (Integer.parseInt((String) table.getValueAt(row, 2)) == 0) {
+				reserveButton.setEnabled(true);
+			} else {
+				reserveButton.setEnabled(false);
+			}
+		} catch (NumberFormatException e1) {
 		}
 	}
-	
+
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
+	public void mousePressed(MouseEvent e) {
 		// TODO 자동 생성된 메소드 스텁
-		
+
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent e) {
 		// TODO 자동 생성된 메소드 스텁
-		
+
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent e) {
 		// TODO 자동 생성된 메소드 스텁
-		
+
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseExited(MouseEvent e) {
 		// TODO 자동 생성된 메소드 스텁
-		
+
 	}
 }
