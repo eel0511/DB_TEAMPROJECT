@@ -337,7 +337,7 @@ public class MainUI extends JFrame implements MouseListener {
 		reservebookListPanel.add(reservebooklistLabel);
 
 		String reserve_colName[] = { "도서명", "ISBN", "예약대기인원", "대출가능기간" };
-		String reserve_bookData[][] = { { "1", "2", "3", "4" }, { "4", "5", "6", "8" } };
+		String reserve_bookData[][] = new String[14][4];
 
 		JTable reservetable = new JTable(reserve_bookData, reserve_colName);
 		reservetable.setBounds(10, 50, 350, 150);
@@ -530,11 +530,13 @@ public class MainUI extends JFrame implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		try {
 		int row = table.getSelectedRow();
 		if(Integer.parseInt((String) table.getValueAt(row, 2)) == 0) {
 			reserveButton.setEnabled(true);
 		}else {
 			reserveButton.setEnabled(false);
+		}}catch(NumberFormatException e1) {
 		}
 	}
 	
