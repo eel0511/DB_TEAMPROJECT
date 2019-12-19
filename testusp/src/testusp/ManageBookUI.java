@@ -186,7 +186,9 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
 	      @Override
 	      public void actionPerformed(ActionEvent e) {
 	         if (e.getSource() == changeButton) {
+	        	changeButton.addActionListener(new setAddressListener());
 	            UpdateBookUI updateBook = new UpdateBookUI();
+	            
 	         }
 
 	   }

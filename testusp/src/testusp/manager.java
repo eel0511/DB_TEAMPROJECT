@@ -195,7 +195,7 @@ public class manager {
 	}
 
 	public static String[][] managerreturnsearch() {
-		// 책이름으로 검색
+		// 반납책 검색
 		Statement stmt;
 		ResultSet res;
 		Connection conn = null;
@@ -218,8 +218,6 @@ public class manager {
 
 			while (res.next()) {
 
-//				System.out.println(Integer.toString(res.getInt("ISBN")) + " " + res.getString("제목")
-//						+ " " +Integer.toString(res.getInt("수량")));
 				bookarray[count][0] = Integer.toString(res.getInt("ID"));
 				bookarray[count][1] = Integer.toString(res.getInt("ISBN"));
 				bookarray[count][2] = res.getString("반납일자");
@@ -306,4 +304,102 @@ public class manager {
 
 		}
 	}
+	public static String[][] ranking(int start, int end) {
+		// 랭킹 기간내의 top10
+		Statement stmt;
+		ResultSet res;
+		Connection conn = null;
+
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+		String[][] bookarray = new String[100][2];
+		int count = 0;
+		String query = "select 성명,count(*) from 대여 natural join 회원 where (대여.대출일자 > "+start+")&&(대여.대출일자<"+end+") group by 성명 order by count(*) DESC";
+
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.createStatement();
+			res = stmt.executeQuery(query);
+
+			while (res.next()) {
+
+				bookarray[count][0] = Integer.toString(res.getInt("성명"));
+				bookarray[count][1] = Integer.toString(res.getInt("count(*)"));	
+				count++;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookarray;
+	}
+	public static void userupdate_for_manager(int ID, String name,String email,int phonenum,int type,int password) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+		Date currentTime = new Date();
+		String dTime = formatter.format(currentTime);
+
+		// 회원수정-매니저
+
+		PreparedStatement stmt;
+		int res;
+		Connection conn = null;
+
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+		String query = "";
+
+		query = "update 회원 set 회원.ID= "+ID+", 회원.성명='"+name+"',회원.이메일='"+email+"',회원.전화번호="+phonenum+",회원.구분="+type+",회원.password="+password+"";
+
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.prepareStatement(query);
+			res = stmt.executeUpdate();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(null, "회원수정완료");
+	}
+	public static void secession_for_manager(int ID) {
+		// 회원탈퇴-매니저
+		PreparedStatement  stmt;
+		int res;
+		Connection conn = null;
+		
+		
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+
+		String query = "delete from 회원 where ID like '"+ID+"'";
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.prepareStatement(query);
+			res = stmt.executeUpdate();
+
+		
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(null, "회원탈퇴완료");
+		
+	}
+	
 }
