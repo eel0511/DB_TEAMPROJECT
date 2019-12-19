@@ -46,7 +46,6 @@ public class MainUI extends JFrame implements MouseListener {
 	JButton searchBookButton;
 
 	JButton searchReserveBookButton;
-	JButton cancleReserveBookButton;
 
 	JTextField idWrite;
 	JTextField pwWrite;
@@ -344,19 +343,13 @@ public class MainUI extends JFrame implements MouseListener {
 		reservetable.setBounds(10, 50, 350, 150);
 		reservebookListPanel.add(reservetable);
 
-		searchReserveBookButton = new JButton("조회");
+		searchReserveBookButton = new JButton("예약");
 		searchReserveBookButton.setBounds(10, 220, 90, 20);
 		searchReserveBookButton.addActionListener(new setAddressListener());
 		reservebookListPanel.add(searchReserveBookButton);
 
 		contentPanel.add(reservebookListPanel);
 
-		cancleReserveBookButton = new JButton("취소");
-		cancleReserveBookButton.setBounds(120, 220, 90, 20);
-		cancleReserveBookButton.addActionListener(new setAddressListener());
-		reservebookListPanel.add(cancleReserveBookButton);
-
-		contentPanel.add(reservebookListPanel);
 
 		logOutButton = new JButton("로그아웃");
 		logOutButton.setBounds(15, 640, 100, 20);
@@ -492,7 +485,6 @@ public class MainUI extends JFrame implements MouseListener {
 		returnBookButton.setEnabled(false);
 
 		searchReserveBookButton.setEnabled(false);
-		cancleReserveBookButton.setEnabled(false);
 	}
 
 	public void setUser() {
@@ -517,7 +509,6 @@ public class MainUI extends JFrame implements MouseListener {
 		returnBookButton.setEnabled(true);
 
 		searchReserveBookButton.setEnabled(true);
-		cancleReserveBookButton.setEnabled(true);
 
 		logOutButton.setEnabled(true);
 	}
