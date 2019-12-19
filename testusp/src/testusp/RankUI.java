@@ -40,12 +40,12 @@ public class RankUI extends JFrame  {
 		contentPanel.setLayout(null);
 
 		RankPanel = new JPanel();
-		RankPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "반납신청 목록", TitledBorder.LEADING,
+		RankPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "대출 TOP 10", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(0, 0, 0)));
 		RankPanel.setBounds(10, 10, 360, 330);
 		RankPanel.setLayout(null);
 
-		booklistLabel = new JLabel("도서명                ISBN                 반납일자            반납만료일자");
+		booklistLabel = new JLabel("아이디                                             대출 수");
 		booklistLabel.setBounds(10, 20, 350, 20);
 		RankPanel.add(booklistLabel);
 		
