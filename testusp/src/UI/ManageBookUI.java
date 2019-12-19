@@ -150,6 +150,7 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
        });
       changeButton = new JButton("수정");
       changeButton.setBounds(75, 425, 60, 20);
+      changeButton.addActionListener(new setAddressListener());
       
       deleteButton = new JButton("삭제");
       deleteButton.setBounds(140, 425, 60, 20);
@@ -161,6 +162,16 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
              manager.book_delete(valISBN);
           }
        });
+      
+      JButton disposeButton = new JButton("종료");
+      disposeButton.setBounds(205, 425, 60, 20);
+      disposeButton.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent arg0) {
+             dispose();
+          }
+       });
+      manageBookPanel.add(disposeButton);
       manageBookPanel.add(searchButton);
       manageBookPanel.add(updateButton);
       manageBookPanel.add(changeButton);
@@ -187,8 +198,9 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
 	      @Override
 	      public void actionPerformed(ActionEvent e) {
 	         if (e.getSource() == changeButton) {
-	        	changeButton.addActionListener(new setAddressListener());
-	            UpdateBookUI updateBook = new UpdateBookUI();
+	        	 int row = table.getSelectedRow();
+				int ISBN = Integer.parseInt((String) table.getValueAt(row, 1));
+	            UpdateBookUI updateBook = new UpdateBookUI(ISBN);
 	            
 	         }
 

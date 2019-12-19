@@ -97,7 +97,6 @@ public class reservation {
 		Connection conn2 = null;
 		int num = 0;
 
-		int rank = 0;
 		String driver = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		String id = "root";
@@ -113,13 +112,19 @@ public class reservation {
 
 			stmt2 = conn2.createStatement();
 			res2 = stmt2.executeQuery(query2);
+
+			while (res2.next()) {
+				
 			num = res2.getInt("대여번호");
 			System.out.println(num);
-			System.out.println(ID);
-			System.out.println(ISBN);
+			
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
 		String query = "delete from 예약 where (예약.ID = " + ID + " and 예약.대여번호 = " + num + ")";
 		try {
 			Class.forName(driver);

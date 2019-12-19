@@ -32,7 +32,7 @@ public class UpdateBookUI extends JFrame {
    JPanel contentPanel;
    JPanel manageBookPanel;
    
-   public UpdateBookUI() {
+   public UpdateBookUI(int ISBN) {
       setTitle("DB TeamProject");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setBounds(250, 250, 600, 600);
@@ -65,6 +65,8 @@ public class UpdateBookUI extends JFrame {
 
       isbnWrite = new JTextField();
       isbnWrite.setBounds(50, 50, 250, 20);
+      isbnWrite.setText(Integer.toString(ISBN));
+      isbnWrite.setEditable(false);
       manageBookPanel.add(isbnWrite);
       isbnWrite.setColumns(10);
       

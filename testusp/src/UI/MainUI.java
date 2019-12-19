@@ -29,6 +29,7 @@ public class MainUI extends JFrame implements MouseListener {
 	JButton bookMngButton;
 	JButton rankButton;
 	JButton userButton;
+	JButton userMngButton;
 	JButton signUpButton;
 
 	JButton loginButton;
@@ -118,7 +119,7 @@ public class MainUI extends JFrame implements MouseListener {
 		JPanel adminPanel = new JPanel();
 		adminPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "관리자기능", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(0, 0, 0)));
-		adminPanel.setBounds(420, 5, 110, 100);
+		adminPanel.setBounds(420, 5, 110, 115);
 		adminPanel.setLayout(null);
 
 		contentPanel.add(adminPanel);
@@ -140,6 +141,12 @@ public class MainUI extends JFrame implements MouseListener {
 		userButton.addActionListener(new setAddressListener());
 		userButton.setEnabled(false);
 		adminPanel.add(userButton);
+
+		userMngButton = new JButton("정보수정");
+		userMngButton.setBounds(10, 90, 90, 20);
+		userMngButton.addActionListener(new setAddressListener());
+		userMngButton.setEnabled(false);
+		adminPanel.add(userMngButton);
 
 		JPanel userPanel = new JPanel();
 		userPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "사용자기능", TitledBorder.LEADING,
@@ -508,17 +515,19 @@ public class MainUI extends JFrame implements MouseListener {
 				int ISBN = Integer.parseInt((String) myreservetable.getValueAt(row, 1));
 				int ID = Integer.parseInt(idWrite.getText());
 				reservation.delete_reservation(ID, ISBN);
-				
+
 				String bookData[][] = reservation.reservationinfo(ID);
 				for (int i = 0; i < bookData.length; i++) {
 					myreservetable.setValueAt(bookData[i][0], i, 0);
 					myreservetable.setValueAt(bookData[i][1], i, 1);
 					myreservetable.setValueAt(bookData[i][2], i, 2);
 					myreservetable.setValueAt(bookData[i][3], i, 3);
+				}
+			} else if (e.getSource() == userMngButton) {
+				UserMngUI mng = new UserMngUI();
 			}
-		}
 
-	}
+		}
 
 	}
 
@@ -536,6 +545,7 @@ public class MainUI extends JFrame implements MouseListener {
 		bookMngButton.setEnabled(false);
 		rankButton.setEnabled(false);
 		userButton.setEnabled(false);
+		userMngButton.setEnabled(false);
 
 		updateButton.setEnabled(false);
 		secessionButton.setEnabled(false);
@@ -586,7 +596,7 @@ public class MainUI extends JFrame implements MouseListener {
 		pwWrite.setEditable(false);
 		loginButton.setEnabled(false);
 		signUpButton.setEnabled(false);
-
+		userMngButton.setEnabled(true);
 		logOutButton.setEnabled(true);
 
 	}

@@ -400,4 +400,113 @@ public class manager {
 		
 	}
 	
+	public static String[][] userlist() {
+		// 책이름으로 검색
+		Statement stmt;
+		ResultSet res;
+		Connection conn = null;
+
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+		String[][] bookarray = new String[10][6];
+		int count = 0;
+		String query = "select * from 회원;";
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.createStatement();
+			res = stmt.executeQuery(query);
+
+			while (res.next()) {
+
+				//if(res.getString(columnIndex))//
+				
+				bookarray[count][0] = Integer.toString(res.getInt("ID"));
+				bookarray[count][1] = res.getString("성명");
+				bookarray[count][2] = res.getString("이메일");
+				bookarray[count][3] = Integer.toString(res.getInt("전화번호"));
+				bookarray[count][4] = Integer.toString(res.getInt("구분"));
+				bookarray[count][5] = Integer.toString(res.getInt("password"));
+				count++;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookarray;
+	}
+	
+	public static String[][] userbooklist_for_Manager(int ID) {
+		// 회원대여목록
+		Statement stmt;
+		ResultSet res;
+		Connection conn = null;
+
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+		String[][] bookarray = new String[10][5];
+		int count = 0;
+		String query = "select * from (대여 natural join 도서)  where 대여.ID  = " + ID + "";
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.createStatement();
+			res = stmt.executeQuery(query);
+
+			while (res.next()) {
+
+				bookarray[count][0] = res.getString("ID");			
+				bookarray[count][1] = res.getString("제목");
+				bookarray[count][2] = res.getString("대출일자");
+				bookarray[count][3] = res.getString("반납만료일자");
+				bookarray[count][4] = res.getString("반납승인");
+
+				count++;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookarray;
+	}
+	
+	public static void deletebookinfo_for_manager(int ID,String bookname) {
+		// 대여목록삭제
+		PreparedStatement  stmt;
+		int res;
+		Connection conn = null;
+		
+		
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/db_teamproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String id = "root";
+		String pw = "1234";
+
+		String query = "delete from 대여 where ID like '"+ID+"' and ISBN = (select ISBN from 도서 where 제목 = '"+bookname+"')";
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, id, pw);
+
+			stmt = conn.prepareStatement(query);
+			res = stmt.executeUpdate();
+
+		
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(null, "대여목록삭제완료");
+		
+	}
+
+
 }
