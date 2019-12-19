@@ -150,6 +150,7 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
        });
       changeButton = new JButton("수정");
       changeButton.setBounds(75, 425, 60, 20);
+      changeButton.addActionListener(new setAddressListener());
       
       deleteButton = new JButton("삭제");
       deleteButton.setBounds(140, 425, 60, 20);
@@ -187,7 +188,6 @@ private DefaultTableModel model = new DefaultTableModel(colName, 0);
 	      @Override
 	      public void actionPerformed(ActionEvent e) {
 	         if (e.getSource() == changeButton) {
-	        	changeButton.addActionListener(new setAddressListener());
 	            UpdateBookUI updateBook = new UpdateBookUI();
 	            
 	         }
