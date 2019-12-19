@@ -3,6 +3,8 @@ package testusp;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Vector;
 import java.awt.*;
 
@@ -21,7 +23,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import testusp.*;
 
-public class MainUI extends JFrame {
+public class MainUI extends JFrame implements MouseListener {
 
 	JButton bookMngButton;
 	JButton rankButton;
@@ -254,6 +256,8 @@ public class MainUI extends JFrame {
 
 		table = new JTable(model);
 		table.setBounds(10, 50, 230, 150);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.addMouseListener(this);
 		bookListPanel.add(table);
 
 		borrowButton = new JButton("대출");
@@ -506,7 +510,7 @@ public class MainUI extends JFrame {
 		updateButton.setEnabled(true);
 		secessionButton.setEnabled(true);
 
-		reserveButton.setEnabled(true);
+		reserveButton.setEnabled(false);
 		borrowButton.setEnabled(true);
 
 		searchBookButton.setEnabled(true);
@@ -531,5 +535,39 @@ public class MainUI extends JFrame {
 
 		logOutButton.setEnabled(true);
 
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int row = table.getSelectedRow();
+		if(Integer.parseInt((String) table.getValueAt(row, 2)) == 0) {
+			reserveButton.setEnabled(true);
+		}else {
+			reserveButton.setEnabled(false);
+		}
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
 	}
 }
