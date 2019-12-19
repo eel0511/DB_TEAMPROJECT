@@ -356,7 +356,7 @@ public class manager {
 		String pw = "1234";
 		String query = "";
 
-		query = "update 회원 set 회원.ID= "+ID+", 회원.성명='"+name+"',회원.이메일='"+email+"',회원.전화번호="+phonenum+",회원.구분="+type+",회원.password="+password+"";
+		query = "update 회원 set 회원.성명='"+name+"',회원.이메일='"+email+"',회원.전화번호="+phonenum+",회원.구분="+type+",회원.password="+password+" where 회원.ID = "+ID+"";
 
 		try {
 			Class.forName(driver);
