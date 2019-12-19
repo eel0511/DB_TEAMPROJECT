@@ -47,7 +47,7 @@ public class RankUI extends JFrame  {
 		RankPanel.setBounds(10, 10, 360, 330);
 		RankPanel.setLayout(null);
 
-		booklistLabel = new JLabel("아이디                                             대출 수");
+		booklistLabel = new JLabel("성명                                             대출 수");
 		booklistLabel.setBounds(10, 20, 350, 20);
 		RankPanel.add(booklistLabel);
 		
@@ -79,6 +79,8 @@ public class RankUI extends JFrame  {
 			public void actionPerformed(ActionEvent arg0) {				
 				int src = Integer.parseInt(srcField.getText());
 				int dst = Integer.parseInt(dstField.getText());
+				
+				String bookData[][] =	manager.ranking(src, dst);
 				
 				for (int i = 0; i < bookData.length; i++) {
 					table.setValueAt(bookData[i][0], i, 0);

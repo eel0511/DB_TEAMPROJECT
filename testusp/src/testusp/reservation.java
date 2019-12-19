@@ -171,7 +171,7 @@ public class reservation {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		String query = "INSERT INTO 예약  values (대여번호 = " + num + ", ID = " + ID + ", 예약순번 = " + (rank++) + " );";
+		String query = "INSERT INTO 예약  values (" + num + ", " + ID + "," + (++rank) + " );";
 		try {
 			Class.forName(driver);
 

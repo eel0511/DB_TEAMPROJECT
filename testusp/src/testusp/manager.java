@@ -328,7 +328,7 @@ public class manager {
 
 			while (res.next()) {
 
-				bookarray[count][0] = Integer.toString(res.getInt("성명"));
+				bookarray[count][0] = res.getString("성명");
 				bookarray[count][1] = Integer.toString(res.getInt("count(*)"));	
 				count++;
 
