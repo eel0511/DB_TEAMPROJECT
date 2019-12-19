@@ -55,6 +55,7 @@ public class MainUI extends JFrame implements MouseListener {
 
 	static JTable table;
 	static JTable usertable;
+	static JTable reservetable
 
 	JPanel bookListPanel;
 	JPanel contentPanel;
@@ -340,7 +341,7 @@ public class MainUI extends JFrame implements MouseListener {
 		String reserve_colName[] = { "도서명", "ISBN", "예약대기인원", "대출가능기간" };
 		String reserve_bookData[][] = new String[14][4];
 
-		JTable reservetable = new JTable(reserve_bookData, reserve_colName);
+		reservetable = new JTable(reserve_bookData, reserve_colName);
 		reservetable.setBounds(10, 50, 350, 150);
 		reservebookListPanel.add(reservetable);
 
@@ -456,6 +457,22 @@ public class MainUI extends JFrame implements MouseListener {
 			else if(e.getSource() == rankButton) {
 				RankUI rank = new RankUI();
 	         }
+			else if(e.getSource() == reserveButton) {
+				int row = table.getSelectedRow();
+				int valISBN = Integer.parseInt((String) table.getValueAt(row, 0));
+				
+				String bookData[][] = reservation.userbooklist(valISBN);
+
+				model = new DefaultTableModel();
+
+				model.setDataVector(bookData, colName);
+
+				for (int i = 0; i < bookData.length; i++) {
+					reservetable.setValueAt(bookData[i][0], i, 0);
+					reservetable.setValueAt(bookData[i][1], i, 1);
+					reservetable.setValueAt(bookData[i][2], i, 2);
+					reservetable.setValueAt(bookData[i][3], i, 3);
+				}
 		}
 
 	}
